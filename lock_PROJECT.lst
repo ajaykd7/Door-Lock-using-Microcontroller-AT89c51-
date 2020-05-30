@@ -1,0 +1,783 @@
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 1
+
+
+
+
+
+       MCS-51 Family Macro Assembler   A S E M - 5 1   V 1.3
+       =====================================================
+
+
+
+	Source File:	C:\Users\samsung\Desktop\sayed sujan ajay\lock_PROJECT.asm
+	Object File:	C:\Users\samsung\Desktop\sayed sujan ajay\lock_PROJECT.hex
+	List File:	C:\Users\samsung\Desktop\sayed sujan ajay\lock_PROJECT.lst
+
+
+
+ Line  I  Addr  Code            Source
+
+    1:		D      00A0	DTA EQU P2
+    2:		B      0097	EN EQU P1.7; i do the change here p0.7
+    3:		B      0096	RS EQU P1.6; i do the change here p0.6
+    4:		B      0095	led equ p1.5; i do the chang ehere p0.5
+    5:		D      00B0	key_row equ p3
+    6:		D      0090	key_col equ p1
+    7:
+    8:	  0000	71 F6		 ACALL INIT_LCD
+    9:	  0002	71 F0		 ACALL LCD_CLR
+   10:	  0004	31 D2		 ACALL WORK_6
+   11:	  0006	91 30		 ACALL START
+   12:	  0008	11 32		D_3: ACALL WORK_1 ;1.CHANGE PASSWORD
+   13:	  000A	11 86		 ACALL WORK_2 ;2.ENTER THE LOCK
+   14:	  000C	51 1A		 ACALL KEYREE
+   15:	  000E	71 4B		 ACALL LOCK_WORK2
+   16:	  0010	71 F0		 ACALL LCD_CLR
+   17:	  0012	80 F4		 SJMP D_3
+   18:	  0014	31 36		 D_4: ACALL WORK_4 ;OLD PASSEWORD
+   19:	  0016	78 50		 MOV R0,#050H
+   20:	  0018	51 1A		D_6: ACALL KEYREE
+   21:	  001A	71 5E		 ACALL LOCK_WORK3
+   22:	  001C	80 FA		 SJMP D_6
+   23:	  001E	31 84		 D_7: ACALL WORK_5 ;NEW PASSEWORD
+   24:	  0020	51 1A		D_8: ACALL KEYREE
+   25:	  0022	71 96		 ACALL LOCK_WORK4
+   26:	  0024	80 FA		 SJMP D_8
+   27:
+   28:	  0026			D_11:
+   29:	  0026	7A 03		 MOV R2,#03H
+   30:	  0028	11 DC		D_1: ACALL WORK_3 ; ENTER PASSEWORD
+   31:	  002A	78 50		 MOV R0,#050H
+   32:	  002C	51 1A		D_2: ACALL keyree
+   33:	  002E	51 83		 ACALL LOCK_WORK1
+   34:	  0030	80 FA		 SJMP D_2
+   35:
+   36:	  0032	75 A0 80	WORK_1: MOV DTA, #080h
+   37:	  0035	91 15		  ACALL SEND_CMD
+   38:	  0037	75 A0 31	  MOV DTA, #'1'
+   39:	  003A	91 27		  ACALL SEND_TXT
+   40:	  003C	75 A0 2E	  MOV DTA, #'.'
+   41:	  003F	91 27		  ACALL SEND_TXT
+   42:	  0041	75 A0 43	  MOV DTA, #'C'
+   43:	  0044	91 27		  ACALL SEND_TXT
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 2
+
+
+
+ Line  I  Addr  Code            Source
+
+   44:	  0046	75 A0 48	  MOV DTA, #'H'
+   45:	  0049	91 27		  ACALL SEND_TXT
+   46:	  004B	75 A0 41	  MOV DTA, #'A'
+   47:	  004E	91 27		  ACALL SEND_TXT
+   48:	  0050	75 A0 4E	  MOV DTA, #'N'
+   49:	  0053	91 27		  ACALL SEND_TXT
+   50:	  0055	75 A0 47	  MOV DTA, #'G'
+   51:	  0058	91 27		  ACALL SEND_TXT
+   52:	  005A	75 A0 45	  MOV DTA, #'E'
+   53:	  005D	91 27		  ACALL SEND_TXT
+   54:	  005F	75 A0 20	  MOV DTA, #' '
+   55:	  0062	91 27		  ACALL SEND_TXT
+   56:	  0064	75 A0 50	  MOV DTA, #'P'
+   57:	  0067	91 27		  ACALL SEND_TXT
+   58:	  0069	75 A0 41	  MOV DTA, #'A'
+   59:	  006C	91 27		  ACALL SEND_TXT
+   60:	  006E	75 A0 53	  MOV DTA, #'S'
+   61:	  0071	91 27		  ACALL SEND_TXT
+   62:	  0073	75 A0 53	  MOV DTA, #'S'
+   63:	  0076	91 27		  ACALL SEND_TXT
+   64:	  0078	75 A0 57	  MOV DTA, #'W'
+   65:	  007B	91 27		  ACALL SEND_TXT
+   66:	  007D	75 A0 4F	  MOV DTA, #'O'
+   67:	  0080	91 27		  ACALL SEND_TXT
+   68:	  0082	75 A0 52	  MOV DTA, #'R'
+   69:	  0085	22		  RET
+   70:
+   71:	  0086			WORK_2:
+   72:	  0086	75 A0 C0	  MOV DTA, #0C0h
+   73:	  0089	91 15		  ACALL SEND_CMD
+   74:	  008B	75 A0 32	  MOV DTA, #'2'
+   75:	  008E	91 27		  ACALL SEND_TXT
+   76:	  0090	75 A0 2E	  MOV DTA, #'.'
+   77:	  0093	91 27		  ACALL SEND_TXT
+   78:	  0095	75 A0 45	  MOV DTA, #'E'
+   79:	  0098	91 27		  ACALL SEND_TXT
+   80:	  009A	75 A0 4E	  MOV DTA, #'N'
+   81:	  009D	91 27		  ACALL SEND_TXT
+   82:	  009F	75 A0 54	  MOV DTA, #'T'
+   83:	  00A2	91 27		  ACALL SEND_TXT
+   84:	  00A4	75 A0 45	  MOV DTA, #'E'
+   85:	  00A7	91 27		  ACALL SEND_TXT
+   86:	  00A9	75 A0 52	  MOV DTA, #'R'
+   87:	  00AC	91 27		  ACALL SEND_TXT
+   88:	  00AE	75 A0 20	  MOV DTA, #' '
+   89:	  00B1	91 27		  ACALL SEND_TXT
+   90:	  00B3	75 A0 54	  MOV DTA, #'T'
+   91:	  00B6	91 27		  ACALL SEND_TXT
+   92:	  00B8	75 A0 48	  MOV DTA, #'H'
+   93:	  00BB	91 27		  ACALL SEND_TXT
+   94:	  00BD	75 A0 45	  MOV DTA, #'E'
+   95:	  00C0	91 27		  ACALL SEND_TXT
+   96:	  00C2	75 A0 20	  MOV DTA, #' '
+   97:	  00C5	91 27		  ACALL SEND_TXT
+   98:	  00C7	75 A0 4C	  MOV DTA, #'L'
+   99:	  00CA	91 27		  ACALL SEND_TXT
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 3
+
+
+
+ Line  I  Addr  Code            Source
+
+  100:	  00CC	75 A0 4F	  MOV DTA, #'O'
+  101:	  00CF	91 27		  ACALL SEND_TXT
+  102:	  00D1	75 A0 43	  MOV DTA, #'C'
+  103:	  00D4	91 27		  ACALL SEND_TXT
+  104:	  00D6	75 A0 4B	  MOV DTA, #'K'
+  105:	  00D9	91 27		  ACALL SEND_TXT
+  106:	  00DB	22		  RET
+  107:
+  108:
+  109:	  00DC			WORK_3:
+  110:	  00DC	71 F0		  ACALL LCD_CLR
+  111:	  00DE	75 A0 80	  MOV DTA, #080h
+  112:	  00E1	91 15		  ACALL SEND_CMD
+  113:	  00E3	75 A0 45	  MOV DTA, #'E'
+  114:	  00E6	91 27		  ACALL SEND_TXT
+  115:	  00E8	75 A0 4E	  MOV DTA, #'N'
+  116:	  00EB	91 27		  ACALL SEND_TXT
+  117:	  00ED	75 A0 54	  MOV DTA, #'T'
+  118:	  00F0	91 27		  ACALL SEND_TXT
+  119:	  00F2	75 A0 45	  MOV DTA, #'E'
+  120:	  00F5	91 27		  ACALL SEND_TXT
+  121:	  00F7	75 A0 52	  MOV DTA, #'R'
+  122:	  00FA	91 27		  ACALL SEND_TXT
+  123:	  00FC	75 A0 20	  MOV DTA, #' '
+  124:	  00FF	91 27		  ACALL SEND_TXT
+  125:	  0101	75 A0 50	  MOV DTA, #'P'
+  126:	  0104	91 27		  ACALL SEND_TXT
+  127:	  0106	75 A0 41	  MOV DTA, #'A'
+  128:	  0109	91 27		  ACALL SEND_TXT
+  129:	  010B	75 A0 53	  MOV DTA, #'S'
+  130:	  010E	91 27		  ACALL SEND_TXT
+  131:	  0110	75 A0 53	  MOV DTA, #'S'
+  132:	  0113	91 27		  ACALL SEND_TXT
+  133:	  0115	75 A0 45	  MOV DTA, #'E'
+  134:	  0118	91 27		  ACALL SEND_TXT
+  135:	  011A	75 A0 57	  MOV DTA, #'W'
+  136:	  011D	91 27		  ACALL SEND_TXT
+  137:	  011F	75 A0 4F	  MOV DTA, #'O'
+  138:	  0122	91 27		  ACALL SEND_TXT
+  139:	  0124	75 A0 52	  MOV DTA, #'R'
+  140:	  0127	91 27		  ACALL SEND_TXT
+  141:	  0129	75 A0 44	  MOV DTA, #'D'
+  142:	  012C	91 27		  ACALL SEND_TXT
+  143:	  012E	75 A0 3A	  MOV DTA, #':'
+  144:	  0131	91 27		  ACALL SEND_TXT
+  145:	  0133	7D C4		  MOV R5,#0C4h
+  146:	  0135	22		  RET
+  147:
+  148:	  0136			  WORK_4:
+  149:	  0136	75 A0 80	  MOV DTA, #080h
+  150:	  0139	91 15		  ACALL SEND_CMD
+  151:	  013B	75 A0 4F	  MOV DTA, #'O'
+  152:	  013E	91 27		  ACALL SEND_TXT
+  153:	  0140	75 A0 4C	  MOV DTA, #'L'
+  154:	  0143	91 27		  ACALL SEND_TXT
+  155:	  0145	75 A0 44	  MOV DTA, #'D'
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 4
+
+
+
+ Line  I  Addr  Code            Source
+
+  156:	  0148	91 27		  ACALL SEND_TXT
+  157:	  014A	75 A0 20	  MOV DTA, #' '
+  158:	  014D	91 27		  ACALL SEND_TXT
+  159:	  014F	75 A0 50	  MOV DTA, #'P'
+  160:	  0152	91 27		  ACALL SEND_TXT
+  161:	  0154	75 A0 41	  MOV DTA, #'A'
+  162:	  0157	91 27		  ACALL SEND_TXT
+  163:	  0159	75 A0 53	  MOV DTA, #'S'
+  164:	  015C	91 27		  ACALL SEND_TXT
+  165:	  015E	75 A0 53	  MOV DTA, #'S'
+  166:	  0161	91 27		  ACALL SEND_TXT
+  167:	  0163	75 A0 45	  MOV DTA, #'E'
+  168:	  0166	91 27		  ACALL SEND_TXT
+  169:	  0168	75 A0 57	  MOV DTA, #'W'
+  170:	  016B	91 27		  ACALL SEND_TXT
+  171:	  016D	75 A0 4F	  MOV DTA, #'O'
+  172:	  0170	91 27		  ACALL SEND_TXT
+  173:	  0172	75 A0 52	  MOV DTA, #'R'
+  174:	  0175	91 27		  ACALL SEND_TXT
+  175:	  0177	75 A0 44	  MOV DTA, #'D'
+  176:	  017A	91 27		  ACALL SEND_TXT
+  177:	  017C	75 A0 3A	  MOV DTA, #':'
+  178:	  017F	91 27		  ACALL SEND_TXT
+  179:	  0181	7D C4		  MOV R5,#0C4h
+  180:	  0183	22		  RET
+  181:
+  182:	  0184			   WORK_5:
+  183:	  0184	75 A0 80	  MOV DTA, #080h
+  184:	  0187	91 15		  ACALL SEND_CMD
+  185:	  0189	75 A0 4E	  MOV DTA, #'N'
+  186:	  018C	91 27		  ACALL SEND_TXT
+  187:	  018E	75 A0 45	  MOV DTA, #'E'
+  188:	  0191	91 27		  ACALL SEND_TXT
+  189:	  0193	75 A0 57	  MOV DTA, #'W'
+  190:	  0196	91 27		  ACALL SEND_TXT
+  191:	  0198	75 A0 20	  MOV DTA, #' '
+  192:	  019B	91 27		  ACALL SEND_TXT
+  193:	  019D	75 A0 50	  MOV DTA, #'P'
+  194:	  01A0	91 27		  ACALL SEND_TXT
+  195:	  01A2	75 A0 41	  MOV DTA, #'A'
+  196:	  01A5	91 27		  ACALL SEND_TXT
+  197:	  01A7	75 A0 53	  MOV DTA, #'S'
+  198:	  01AA	91 27		  ACALL SEND_TXT
+  199:	  01AC	75 A0 53	  MOV DTA, #'S'
+  200:	  01AF	91 27		  ACALL SEND_TXT
+  201:	  01B1	75 A0 45	  MOV DTA, #'E'
+  202:	  01B4	91 27		  ACALL SEND_TXT
+  203:	  01B6	75 A0 57	  MOV DTA, #'W'
+  204:	  01B9	91 27		  ACALL SEND_TXT
+  205:	  01BB	75 A0 4F	  MOV DTA, #'O'
+  206:	  01BE	91 27		  ACALL SEND_TXT
+  207:	  01C0	75 A0 52	  MOV DTA, #'R'
+  208:	  01C3	91 27		  ACALL SEND_TXT
+  209:	  01C5	75 A0 44	  MOV DTA, #'D'
+  210:	  01C8	91 27		  ACALL SEND_TXT
+  211:	  01CA	75 A0 3A	  MOV DTA, #':'
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 5
+
+
+
+ Line  I  Addr  Code            Source
+
+  212:	  01CD	91 27		  ACALL SEND_TXT
+  213:	  01CF	7D C4		  MOV R5,#0C4h
+  214:	  01D1	22		  RET
+  215:	  01D2	75 A0 84	WORK_6: MOV DTA, #084h
+  216:	  01D5	91 15		  ACALL SEND_CMD
+  217:	  01D7	75 A0 57	  MOV DTA, #'W'
+  218:	  01DA	91 27		  ACALL SEND_TXT
+  219:	  01DC	75 A0 45	  MOV DTA, #'E'
+  220:	  01DF	91 27		  ACALL SEND_TXT
+  221:	  01E1	75 A0 4C	  MOV DTA, #'L'
+  222:	  01E4	91 27		  ACALL SEND_TXT
+  223:	  01E6	75 A0 4C	  MOV DTA, #'L'
+  224:	  01E9	91 27		  ACALL SEND_TXT
+  225:	  01EB	75 A0 43	  MOV DTA, #'C'
+  226:	  01EE	91 27		  ACALL SEND_TXT
+  227:	  01F0	75 A0 4F	  MOV DTA, #'O'
+  228:	  01F3	91 27		  ACALL SEND_TXT
+  229:	  01F5	75 A0 4D	  MOV DTA, #'M'
+  230:	  01F8	91 27		  ACALL SEND_TXT
+  231:	  01FA	75 A0 45	  MOV DTA, #'E'
+  232:	  01FD	91 27		  ACALL SEND_TXT
+  233:	  01FF	75 A0 C6	   MOV DTA, #0C6h
+  234:	  0202	91 15		  ACALL SEND_CMD
+  235:	  0204	75 A0 55	  MOV DTA, #'U'
+  236:	  0207	91 27		  ACALL SEND_TXT
+  237:	  0209	75 A0 49	  MOV DTA, #'I'
+  238:	  020C	91 27		  ACALL SEND_TXT
+  239:	  020E	75 A0 55	  MOV DTA, #'U'
+  240:	  0211	91 27		  ACALL SEND_TXT
+  241:	  0213	7F 2F		  MOV R7,#02FH
+  242:	  0215	91 1E		LL1: ACALL DELAY
+  243:	  0217	DF FC		  DJNZ R7,LL1
+  244:	  0219	22		  RET
+  245:
+  246:				;WORK KEYBORD........
+  247:	  021A	75 90 FF	keyree: MOV  key_col,#0FFH 		;make key_col an input port
+  248:	  021D	75 B0 00	K1: MOV  key_row,#00H 		;ground all rows at once
+  249:	  0220	E5 90			MOV  A,key_col 		;read all col(ensure keys open)
+  250:	  0222	54 07			ANL  A,#00000111B     	;masked unused bits
+  251:	  0224	B4 07 F6		CJNE A,#00000111B,K1 	;till all keys release
+  252:	  0227	91 1E		K2: ACALL DELAY 		;call 20 msec delay
+  253:	  0229	E5 90			MOV  A,key_col 		;see if any key is pressed
+  254:	  022B	54 07			ANL  A,#00000111B     	;mask unused bits
+  255:	  022D	B4 07 02		CJNE A,#00000111B,OVER	;key pressed, find row
+  256:	  0230	80 F5			SJMP K2 ;check till key pressed
+  257:	  0232	91 1E		OVER: ACALL DELAY 		;wait 20 msec debounce time
+  258:	  0234	E5 90			MOV  A,key_col 		;check key closure
+  259:	  0236	54 07			ANL  A,#00000111B     	;mask unused bits
+  260:	  0238	B4 07 02		CJNE A,#00000111B,OVER1	;key pressed, find row
+  261:	  023B	80 EA			SJMP K2 		;if none, keep polling
+  262:	  023D	75 B0 FE	OVER1: MOV key_row, #11111110B  ;ground row 0
+  263:	  0240	E5 90			MOV A,key_col ;read all columns
+  264:	  0242	54 07			ANL A,#00000111B ;mask unused bits
+  265:	  0244	B4 07 21		CJNE A,#00000111B,ROW_0  ;key row 0, find col.
+  266:	  0247	75 B0 FD		MOV key_row,#11111101B ;ground row 1
+  267:	  024A	E5 90			MOV A,key_col  ;read all columns
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 6
+
+
+
+ Line  I  Addr  Code            Source
+
+  268:	  024C	54 07			ANL A,#00000111B ;mask unused bits
+  269:	  024E	B4 07 1C		CJNE A,#00000111B,ROW_1  ;key row 1, find col.
+  270:	  0251	75 B0 FB		MOV key_row,#11111011B ;ground row 2
+  271:	  0254	E5 90			MOV A,key_col  ;read all columns
+  272:	  0256	54 07			ANL A,#00000111B ;mask unused bits
+  273:	  0258	B4 07 17		CJNE A,#00000111B,ROW_2  ;key row 2, find col.
+  274:	  025B	75 B0 F7		MOV key_row,#11110111B ;ground row 3
+  275:	  025E	E5 90			MOV A,key_col  ;read all columns
+  276:	  0260	54 07			ANL A,#0000111B ;mask unused bits
+  277:	  0262	B4 07 12		CJNE A,#0000111B,ROW_3  ;key row 3, find col.
+  278:	  0265	02 02 27		LJMP K2 ;if none, false input,   ;repeat
+  279:	  0268	90 04 50	ROW_0: MOV  DPTR,#KCODE0   ;set DPTR=start of row 0
+  280:	  026B	80 0D			SJMP FIND           ;find col. Key belongs to
+  281:	  026D	90 04 53	ROW_1: MOV  DPTR,#KCODE1   ;set DPTR=start of row
+  282:	  0270	80 08			SJMP FIND           ;find col. Key belongs to
+  283:	  0272	90 04 56	ROW_2: MOV  DPTR,#KCODE2  ;set DPTR=start of row 2
+  284:	  0275	80 03			SJMP FIND           ;find col. Key belongs to
+  285:	  0277	90 04 59	ROW_3: MOV  DPTR,#KCODE3  ;set DPTR=start of row 3
+  286:	  027A	13		FIND: RRC  A              ;see if any CY bit low
+  287:	  027B	50 03			JNC  MATCH          ;if zero, get ASCII code
+  288:	  027D	A3			INC  DPTR           ;point to next col. addr
+  289:	  027E	80 FA			SJMP FIND;keep searching
+  290:	  0280	E4		MATCH: CLR  A              ;set A=0 (match is found)
+  291:	  0281	93			MOVC A,@A+DPTR
+  292:	  0282	22			RET
+  293:				;...............................
+  294:				;HERE WORK IN OPEN LOCK
+  295:	  0283			LOCK_WORK1:
+  296:	  0283	B4 01 07		CJNE A,#1,L22
+  297:	  0286	F5 A0			 MOV DTA, A
+  298:	  0288	91 15			ACALL SEND_CMD
+  299:	  028A	02 00 08		LJMP D_3
+  300:	  028D	B4 02 53	L22:	CJNE A,#2,L23
+  301:	  0290	18			DEC R0
+  302:	  0291	E6			MOV A,@R0
+  303:	  0292	B5 43 24		CJNE A,043H,G_2
+  304:	  0295	18			DEC R0
+  305:	  0296	E6			MOV A,@R0
+  306:	  0297	B5 42 1F		CJNE A,042H,G_2
+  307:	  029A	18			DEC R0
+  308:	  029B	E6			MOV A,@R0
+  309:	  029C	B5 41 1A		CJNE A,041H,G_2
+  310:	  029F	18			DEC R0
+  311:	  02A0	E6			MOV A,@R0
+  312:	  02A1	B5 40 15		CJNE A,040H,G_2
+  313:	  02A4	71 F0			ACALL LCD_CLR
+  314:	  02A6	75 A0 87		MOV DTA, #087h
+  315:	  02A9	91 15		  	ACALL SEND_CMD
+  316:	  02AB	75 A0 4F	  	MOV DTA, #'O'
+  317:	  02AE	91 27		  	ACALL SEND_TXT
+  318:	  02B0	75 A0 4B	  	MOV DTA, #'K'
+  319:	  02B3	91 27		  	ACALL SEND_TXT
+  320:	  02B5	C2 95			CLR led
+  321:	  02B7	80 FE			SJMP $
+  322:	  02B9				G_2:
+  323:	  02B9	51 F3			ACALL WORK_11
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 7
+
+
+
+ Line  I  Addr  Code            Source
+
+  324:	  02BB	7F 1F		  	MOV R7,#01FH
+  325:	  02BD	91 1E		LL3: ACALL DELAY
+  326:	  02BF	DF FC		  	DJNZ R7,LL3
+  327:	  02C1	DA 1D			DJNZ R2,G_5
+  328:	  02C3	71 F0			ACALL LCD_CLR
+  329:	  02C5	75 A0 87		MOV DTA, #087h
+  330:	  02C8	91 15		  	ACALL SEND_CMD
+  331:	  02CA	75 A0 4C	  	MOV DTA, #'L'
+  332:	  02CD	91 27		  	ACALL SEND_TXT
+  333:	  02CF	75 A0 4F	  	MOV DTA, #'O'
+  334:	  02D2	91 27		  	ACALL SEND_TXT
+  335:	  02D4	75 A0 43	  	MOV DTA, #'C'
+  336:	  02D7	91 27		  	ACALL SEND_TXT
+  337:	  02D9	75 A0 4B	  	MOV DTA, #'K'
+  338:	  02DC	91 27		  	ACALL SEND_TXT
+  339:	  02DE	80 FE			SJMP $
+  340:	  02E0	02 00 28	G_5:	LJMP D_1
+  341:	  02E3			L23:
+  342:	  02E3	8D A0		      MOV DTA, R5
+  343:	  02E5	91 15		    ACALL SEND_CMD
+  344:	  02E7	F5 A0		    MOV DTA, A
+  345:	  02E9	91 27		    ACALL SEND_TXT
+  346:	  02EB	91 1E		      ACALL DELAY
+  347:	  02ED	0D		      inc R5
+  348:	  02EE	94 30		      SUBB A,#30H
+  349:	  02F0	F6		      MOV @R0,A
+  350:	  02F1	08		      INC R0
+  351:	  02F2	22		      RET
+  352:
+  353:	  02F3			WORK_11:
+  354:	  02F3	71 F0			ACALL LCD_CLR
+  355:	  02F5	75 A0 80		MOV DTA, #080h
+  356:	  02F8	91 15		  	ACALL SEND_CMD
+  357:	  02FA	75 A0 57	  	MOV DTA, #'W'
+  358:	  02FD	91 27		  	ACALL SEND_TXT
+  359:	  02FF	75 A0 52	  	MOV DTA, #'R'
+  360:	  0302	91 27		  	ACALL SEND_TXT
+  361:	  0304	75 A0 4F	  	MOV DTA, #'O'
+  362:	  0307	91 27		  	ACALL SEND_TXT
+  363:	  0309	75 A0 4E	  	MOV DTA, #'N'
+  364:	  030C	91 27		  	ACALL SEND_TXT
+  365:	  030E	75 A0 47	  	MOV DTA, #'G'
+  366:	  0311	91 27		  	ACALL SEND_TXT
+  367:	  0313	75 A0 20	  	MOV DTA, #' '
+  368:	  0316	91 27		  	ACALL SEND_TXT
+  369:	  0318	75 A0 50	  	MOV DTA, #'P'
+  370:	  031B	91 27		  	ACALL SEND_TXT
+  371:	  031D	75 A0 41	  	MOV DTA, #'A'
+  372:	  0320	91 27		  	ACALL SEND_TXT
+  373:	  0322	75 A0 53	  	MOV DTA, #'S'
+  374:	  0325	91 27		  	ACALL SEND_TXT
+  375:	  0327	75 A0 53	  	MOV DTA, #'S'
+  376:	  032A	91 27		  	ACALL SEND_TXT
+  377:	  032C	75 A0 45	  	MOV DTA, #'E'
+  378:	  032F	91 27		  	ACALL SEND_TXT
+  379:	  0331	75 A0 57	  	MOV DTA, #'W'
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 8
+
+
+
+ Line  I  Addr  Code            Source
+
+  380:	  0334	91 27		  	ACALL SEND_TXT
+  381:	  0336	75 A0 4F	  	MOV DTA, #'O'
+  382:	  0339	91 27		  	ACALL SEND_TXT
+  383:	  033B	75 A0 52	  	MOV DTA, #'R'
+  384:	  033E	91 27		  	ACALL SEND_TXT
+  385:	  0340	75 A0 44	  	MOV DTA, #'D'
+  386:	  0343	91 27		  	ACALL SEND_TXT
+  387:	  0345	75 A0 21	  	MOV DTA, #'!'
+  388:	  0348	91 27		  	ACALL SEND_TXT
+  389:	  034A	22		  	RET             ;display pressed key
+  390:				;......................
+  391:				;PROGRAM CHOCE
+  392:	  034B			LOCK_WORK2:
+  393:	  034B	94 30			SUBB A,#30H
+  394:	  034D	B4 01 05		CJNE A,#1,L42
+  395:	  0350	71 F0			 ACALL LCD_CLR
+  396:	  0352	02 00 14	        LJMP D_4
+  397:	  0355	B4 02 05	L42:	CJNE A,#2,L43
+  398:	  0358	71 F0			ACALL LCD_CLR
+  399:	  035A	02 00 26		LJMP D_11
+  400:	  035D	22		L43:	RET
+  401:
+  402:				;.....................
+  403:				;OLD ENTER PASSOWED
+  404:	  035E	B4 01 07	LOCK_WORK3: CJNE A,#1,L52
+  405:	  0361	F5 A0			 MOV DTA, A
+  406:	  0363	91 15			ACALL SEND_CMD
+  407:	  0365	02 00 08	G_1:	 LJMP D_3
+  408:	  0368	B4 02 1B	L52:	CJNE A,#2H,L63
+  409:	  036B	18			DEC R0
+  410:	  036C	E6			MOV A,@R0
+  411:	  036D	B5 43 F5		CJNE A,043H,G_1
+  412:	  0370	18			DEC R0
+  413:	  0371	E6			MOV A,@R0
+  414:	  0372	B5 42 F0		CJNE A,042H,G_1
+  415:	  0375	18			DEC R0
+  416:	  0376	E6			MOV A,@R0
+  417:	  0377	B5 41 EB		CJNE A,041H,G_1
+  418:	  037A	18			DEC R0
+  419:	  037B	E6			MOV A,@R0
+  420:	  037C	B5 40 E6		CJNE A,040H,G_1
+  421:	  037F	71 F0			ACALL LCD_CLR
+  422:	  0381	79 40			MOV R1,#040H
+  423:	  0383	02 00 1E		LJMP D_7
+  424:
+  425:	  0386			L63:
+  426:	  0386	8D A0		     MOV DTA, R5
+  427:	  0388	91 15		    ACALL SEND_CMD
+  428:	  038A	F5 A0		    MOV DTA, A
+  429:	  038C	91 27		    ACALL SEND_TXT
+  430:	  038E	91 1E		      ACALL DELAY
+  431:	  0390	0D		      inc R5
+  432:	  0391	94 30		      SUBB A,#30H
+  433:	  0393	F6		      MOV @R0,A
+  434:	  0394	08		      INC R0
+  435:	  0395	22		      RET
+
+ASEM-51 V1.3                                         Copyright (c) 2002 by W.W. Heinz                                         PAGE 9
+
+
+
+ Line  I  Addr  Code            Source
+
+  436:				;......................
+  437:				;NEW ENTER PASSOWED
+  438:	  0396	B4 01 07	LOCK_WORK4: CJNE A,#1,L72
+  439:	  0399	F5 A0			 MOV DTA, A
+  440:	  039B	91 15			ACALL SEND_CMD
+  441:	  039D	02 00 08	        LJMP D_3
+  442:	  03A0	B4 02 3D	L72:	CJNE A,#2,L83
+  443:	  03A3	71 F0			ACALL LCD_CLR
+  444:	  03A5	75 A0 82		MOV DTA, #082h
+  445:	  03A8	91 15		  	ACALL SEND_CMD
+  446:	  03AA	75 A0 43	  	MOV DTA, #'C'
+  447:	  03AD	91 27		 	ACALL SEND_TXT
+  448:	  03AF	75 A0 48		MOV DTA, #'H'
+  449:	  03B2	91 27		  	ACALL SEND_TXT
+  450:	  03B4	75 A0 41	  	MOV DTA, #'A'
+  451:	  03B7	91 27		  	ACALL SEND_TXT
+  452:	  03B9	75 A0 4E	  	MOV DTA, #'N'
+  453:	  03BC	91 27		  	ACALL SEND_TXT
+  454:	  03BE	75 A0 47	  	MOV DTA, #'G'
+  455:	  03C1	91 27		  	ACALL SEND_TXT
+  456:	  03C3	75 A0 45	  	MOV DTA, #'E'
+  457:	  03C6	91 27		  	ACALL SEND_TXT
+  458:	  03C8	75 A0 20	  	MOV DTA, #' '
+  459:	  03CB	91 27		  	ACALL SEND_TXT
+  460:	  03CD	75 A0 4F	  	MOV DTA, #'O'
+  461:	  03D0	91 27		  	ACALL SEND_TXT
+  462:	  03D2	75 A0 4B	  	MOV DTA, #'K'
+  463:	  03D5	91 27		  	ACALL SEND_TXT
+  464:	  03D7	7F 1F		  	MOV R7,#01FH
+  465:	  03D9	91 1E		LL2:    ACALL DELAY
+  466:	  03DB	DF FC		  	DJNZ R7,LL2
+  467:	  03DD	02 00 08		LJMP D_3
+  468:	  03E0			L83:
+  469:	  03E0	8D A0		     MOV DTA, R5
+  470:	  03E2	91 15		    ACALL SEND_CMD
+  471:	  03E4	F5 A0		    MOV DTA, A
+  472:	  03E6	91 27		    ACALL SEND_TXT
+  473:	  03E8	91 1E		      ACALL DELAY
+  474:	  03EA	0D		      inc R5
+  475:	  03EB	94 30		      SUBB A,#30H
+  476:	  03ED	F7		      MOV @R1,A
+  477:	  03EE	09		      INC R1
+  478:	  03EF	22		      RET
+  479:				;......................
+  480:
+  481:	  03F0	75 A0 01	LCD_CLR:   MOV DTA,#01h
+  482:	  03F3	91 15		    ACALL SEND_CMD
+  483:	  03F5	22		    RET
+  484:	  03F6	75 A0 38	INIT_LCD:  MOV DTA,#38h
+  485:	  03F9	91 15		    ACALL SEND_CMD
+  486:	  03FB	75 A0 38	    MOV DTA,#38h
+  487:	  03FE	91 15		    ACALL SEND_CMD
+  488:	  0400	75 A0 38	    MOV DTA,#38h
+  489:	  0403	91 15		    ACALL SEND_CMD
+  490:	  0405	75 A0 0C	    MOV DTA,#0Ch  ;Display on, cursor off
+  491:	  0408	91 15		    ACALL SEND_CMD
+
+ASEM-51 V1.3                                        Copyright (c) 2002 by W.W. Heinz                                         PAGE 10
+
+
+
+ Line  I  Addr  Code            Source
+
+  492:	  040A	75 A0 06	    MOV DTA,#06h
+  493:	  040D	91 15		    ACALL SEND_CMD
+  494:	  040F	75 A0 80	    MOV DTA,#80h  ;Line 1, Position 0
+  495:	  0412	91 15		    ACALL SEND_CMD
+  496:	  0414	22		    RET
+  497:
+  498:	  0415	C2 96		SEND_CMD: CLR RS
+  499:	  0417	D2 97		    SETB EN
+  500:	  0419	C2 97		    CLR EN
+  501:	  041B	91 1E		    ACALL DELAY
+  502:	  041D	22		    RET
+  503:
+  504:
+  505:	  041E	7B FF		DELAY:  MOV  R3,#255     ;50 or higher for fast CPUs
+  506:	  0420	7C 32		L2:      MOV  R4,#50    ;R4 = 255
+  507:	  0422	DC FE		L1:       DJNZ R4,L1    ;stay until R4 becomes
+  508:	  0424	DB FA		    DJNZ R3, L2
+  509:	  0426	22		    RET
+  510:	  0427	D2 96		SEND_TXT:  SETB RS
+  511:	  0429	D2 97		    SETB EN
+  512:	  042B	C2 97		    CLR EN
+  513:	  042D	91 1E		    ACALL DELAY
+  514:	  042F	22		    RET
+  515:	  0430	79 40		START: MOV R1,#040H
+  516:	  0432	7A 04		 MOV R2,#04H
+  517:	  0434	77 01		 D_5: MOV @R1,#01H
+  518:	  0436	09		 INC R1
+  519:	  0437	DA FB		 DJNZ R2,D_5
+  520:	  0439	19		 DEC R1
+  521:	  043A	22		 RET
+  522:				;ASCII LOOK-UP TABLE FOR EACH ROW
+  523:		N      0450		ORG  0450H
+  524:	  0450	31 32 33	KCODE0: DB   31H,32H,33H ;ROW 0
+  525:	  0453	34 35 36	KCODE1: DB   34h,35h,36h ;ROW 1
+  526:	  0456	37 38 39	KCODE2: DB   37h,38h,39h ;ROW 2
+  527:	  0459	01 30 02	KCODE3: DB   1h,30h,2h ;ROW 3
+  528:					END
+
+
+
+
+
+                     register banks used:  ---
+
+                     no errors
+
+
+
+
+ASEM-51 V1.3                                        Copyright (c) 2002 by W.W. Heinz                                         PAGE 11
+
+
+
+
+
+	       L I S T   O F   S Y M B O L S
+	       =============================
+
+
+SYMBOL				  TYPE     VALUE	LINE
+------------------------------------------------------------
+??ASEM_51			  NUMBER    8051
+??VERSION			  NUMBER    0130
+AC				  BIT	      D6
+ACC				  DATA	      E0
+B				  DATA	      F0
+CY				  BIT	      D7
+DELAY				  CODE	    041E	 505
+DPH				  DATA	      83
+DPL				  DATA	      82
+DTA				  NUMBER    00A0	   1
+D_1				  CODE	    0028	  30
+D_11				  CODE	    0026	  28
+D_2				  CODE	    002C	  32
+D_3				  CODE	    0008	  12
+D_4				  CODE	    0014	  18
+D_5				  CODE	    0434	 517
+D_6				  CODE	    0018	  20
+D_7				  CODE	    001E	  23
+D_8				  CODE	    0020	  24
+EA				  BIT	      AF
+EN				  NUMBER    0097	   2
+ES				  BIT	      AC
+ET0				  BIT	      A9
+ET1				  BIT	      AB
+EX0				  BIT	      A8
+EX1				  BIT	      AA
+EXTI0				  CODE	    0003
+EXTI1				  CODE	    0013
+F0				  BIT	      D5
+FIND				  CODE	    027A	 286
+G_1				  CODE	    0365	 407
+G_2				  CODE	    02B9	 322
+G_5				  CODE	    02E0	 340
+IE				  DATA	      A8
+IE0				  BIT	      89
+IE1				  BIT	      8B
+INIT_LCD			  CODE	    03F6	 484
+INT0				  BIT	      B2
+INT1				  BIT	      B3
+IP				  DATA	      B8
+IT0				  BIT	      88
+IT1				  BIT	      8A
+K1				  CODE	    021D	 248
+K2				  CODE	    0227	 252
+KCODE0				  CODE	    0450	 524
+KCODE1				  CODE	    0453	 525
+KCODE2				  CODE	    0456	 526
+KCODE3				  CODE	    0459	 527
+KEYREE				  CODE	    021A	 247
+KEY_COL				  NUMBER    0090	   6
+
+ASEM-51 V1.3                                        Copyright (c) 2002 by W.W. Heinz                                         PAGE 12
+
+
+
+SYMBOL				  TYPE     VALUE	LINE
+------------------------------------------------------------
+KEY_ROW				  NUMBER    00B0	   5
+L1				  CODE	    0422	 507
+L2				  CODE	    0420	 506
+L22				  CODE	    028D	 300
+L23				  CODE	    02E3	 341
+L42				  CODE	    0355	 397
+L43				  CODE	    035D	 400
+L52				  CODE	    0368	 408
+L63				  CODE	    0386	 425
+L72				  CODE	    03A0	 442
+L83				  CODE	    03E0	 468
+LCD_CLR				  CODE	    03F0	 481
+LED				  NUMBER    0095	   4
+LL1				  CODE	    0215	 242
+LL2				  CODE	    03D9	 465
+LL3				  CODE	    02BD	 325
+LOCK_WORK1			  CODE	    0283	 295
+LOCK_WORK2			  CODE	    034B	 392
+LOCK_WORK3			  CODE	    035E	 404
+LOCK_WORK4			  CODE	    0396	 438
+MATCH				  CODE	    0280	 290
+OV				  BIT	      D2
+OVER				  CODE	    0232	 257
+OVER1				  CODE	    023D	 262
+P				  BIT	      D0
+P0				  DATA	      80
+P1				  DATA	      90
+P2				  DATA	      A0
+P3				  DATA	      B0
+PCON				  DATA	      87
+PS				  BIT	      BC
+PSW				  DATA	      D0
+PT0				  BIT	      B9
+PT1				  BIT	      BB
+PX0				  BIT	      B8
+PX1				  BIT	      BA
+RB8				  BIT	      9A
+RD				  BIT	      B7
+REN				  BIT	      9C
+RESET				  CODE	    0000
+RI				  BIT	      98
+ROW_0				  CODE	    0268	 279
+ROW_1				  CODE	    026D	 281
+ROW_2				  CODE	    0272	 283
+ROW_3				  CODE	    0277	 285
+RS				  NUMBER    0096	   3
+RS0				  BIT	      D3
+RS1				  BIT	      D4
+RXD				  BIT	      B0
+SBUF				  DATA	      99
+SCON				  DATA	      98
+SEND_CMD			  CODE	    0415	 498
+SEND_TXT			  CODE	    0427	 510
+SINT				  CODE	    0023
+SM0				  BIT	      9F
+SM1				  BIT	      9E
+
+ASEM-51 V1.3                                        Copyright (c) 2002 by W.W. Heinz                                         PAGE 13
+
+
+
+SYMBOL				  TYPE     VALUE	LINE
+------------------------------------------------------------
+SM2				  BIT	      9D
+SP				  DATA	      81
+START				  CODE	    0430	 515
+T0				  BIT	      B4
+T1				  BIT	      B5
+TB8				  BIT	      9B
+TCON				  DATA	      88
+TF0				  BIT	      8D
+TF1				  BIT	      8F
+TH0				  DATA	      8C
+TH1				  DATA	      8D
+TI				  BIT	      99
+TIMER0				  CODE	    000B
+TIMER1				  CODE	    001B
+TL0				  DATA	      8A
+TL1				  DATA	      8B
+TMOD				  DATA	      89
+TR0				  BIT	      8C
+TR1				  BIT	      8E
+TXD				  BIT	      B1
+WORK_1				  CODE	    0032	  36
+WORK_11				  CODE	    02F3	 353
+WORK_2				  CODE	    0086	  71
+WORK_3				  CODE	    00DC	 109
+WORK_4				  CODE	    0136	 148
+WORK_5				  CODE	    0184	 182
+WORK_6				  CODE	    01D2	 215
+WR				  BIT	      B6
